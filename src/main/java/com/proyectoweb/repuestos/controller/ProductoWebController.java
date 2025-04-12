@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.proyectoweb.repuestos.entity.Producto;
+import com.proyectoweb.repuestos.service.ICategoriaService;
 import com.proyectoweb.repuestos.service.IProductoService;
 
 @Controller
@@ -19,15 +20,21 @@ public class ProductoWebController {
     @Autowired
     private IProductoService productoService;
 
+    @Autowired
+    private ICategoriaService categoriaService;
+
     @GetMapping
     public String listarProductos(Model model) {
-        model.addAttribute("productos", productoService.listarTodos());
-        return "admin/productos/lista"; // ← este HTML lo vas a crear en templates
+        var productos = productoService.listarTodos();
+        System.out.println("Productos encontrados: " + productos.size());
+        model.addAttribute("productos", productos);
+        return "admin/productos/lista";
     }
 
     @GetMapping("/nuevo")
     public String mostrarFormularioNuevo(Model model) {
         model.addAttribute("producto", new Producto());
+        model.addAttribute("categorias", categoriaService.listarTodas());
         return "admin/productos/formulario";
     }
 
@@ -41,6 +48,7 @@ public class ProductoWebController {
     public String editarProducto(@PathVariable Long id, Model model) {
         Producto producto = productoService.buscarPorId(id);
         model.addAttribute("producto", producto);
+        model.addAttribute("categorias", categoriaService.listarTodas());
         return "admin/productos/formulario";
     }
 

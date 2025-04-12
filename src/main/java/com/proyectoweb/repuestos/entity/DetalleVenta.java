@@ -37,4 +37,18 @@ public class DetalleVenta {
     @ManyToOne
     @JoinColumn(name = "id_producto")
     private Producto producto;
+
+    // Método getter para el producto
+    public Producto getProducto() {
+        return producto;
+    }
+
+    // Métodos getter y setter para cantidad y precio
+    public Integer getCantidad() {
+        return cantidad;
+    }
+
+    public Double getPrecioUnitario() {
+        return precioUnitario;
+    }
 }

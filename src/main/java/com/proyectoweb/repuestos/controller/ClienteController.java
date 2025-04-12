@@ -12,14 +12,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.proyectoweb.repuestos.entity.Cliente;
-import com.proyectoweb.repuestos.service.IClienteServiceImpl;
+import com.proyectoweb.repuestos.service.IClienteService;
 
 @RestController
 @RequestMapping("/api/clientes")
 public class ClienteController {
 
     @Autowired
-    private IClienteServiceImpl clienteService;
+    private IClienteService clienteService;
 
     @GetMapping
     public List<Cliente> listar() {

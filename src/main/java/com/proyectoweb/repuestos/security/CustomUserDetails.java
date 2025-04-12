@@ -50,6 +50,9 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return usuario.getEstado().toString().equalsIgnoreCase("ACTIVO");
+        // Agregar log para ver el valor de estado
+        System.out.println("Estado del usuario: " + usuario.getEstado());
+        
+        return usuario.getEstado().toString().equals("ACTIVO");
     }
 }

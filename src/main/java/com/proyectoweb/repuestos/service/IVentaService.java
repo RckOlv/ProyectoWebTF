@@ -8,5 +8,8 @@ public interface IVentaService {
     List<Venta> listarVentas();
     Venta obtenerVentaPorId(Long id);
     Venta guardarVenta(Venta venta);
+    Venta actualizarVenta(Venta venta);
     void eliminarVenta(Long id);
+    Venta crearVenta(Venta venta);
+    void cancelarVenta(Long id);
 }
