@@ -16,21 +16,37 @@ public class ClienteServiceImpl implements IClienteService {
 
     @Override
     public List<Cliente> listarTodos() {
-        return clienteRepository.findAll();  // Devuelve la lista de todos los clientes
-    }
-
-    @Override
-    public Cliente guardar(Cliente cliente) {
-        return clienteRepository.save(cliente);  // Guarda un cliente
+        return clienteRepository.findAll();
     }
 
     @Override
     public Cliente buscarPorId(Long id) {
-        return clienteRepository.findById(id).orElse(null);  // Busca un cliente por ID
+        return clienteRepository.findById(id).orElse(null);
+    }
+
+    @Override
+    public Cliente guardar(Cliente cliente) {
+        return clienteRepository.save(cliente);
+    }
+
+    @Override
+    public Cliente actualizar(Long id, Cliente clienteActualizado) {
+        Cliente existente = clienteRepository.findById(id).orElse(null);
+        if (existente != null) {
+            existente.setNombre(clienteActualizado.getNombre());
+            existente.setApellido(clienteActualizado.getApellido());
+            existente.setDni(clienteActualizado.getDni());
+            existente.setTelefono(clienteActualizado.getTelefono());
+            existente.setEmail(clienteActualizado.getEmail());
+            existente.setEstado(clienteActualizado.getEstado());
+            // no se modifica la fecha de registro
+            return clienteRepository.save(existente);
+        }
+        return null;
     }
 
     @Override
     public void eliminar(Long id) {
-        clienteRepository.deleteById(id);  // Elimina un cliente por ID
+        clienteRepository.deleteById(id);
     }
 }

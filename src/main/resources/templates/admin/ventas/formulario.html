@@ -37,15 +37,18 @@
         <div class="mb-3">
             <label for="cliente" class="form-label">Cliente</label>
             <select class="form-select" id="cliente" name="cliente.id" required>
-                <option th:each="cliente : ${clientes}" th:value="${cliente.id}" th:text="${cliente.nombre}" 
-                        th:selected="${venta.cliente != null && venta.cliente.id == cliente.id}"></option>
+                <option value="">Seleccione un cliente</option>
+                <option th:each="cliente : ${clientes}" 
+                        th:value="${cliente.id}" 
+                        th:text="${cliente.nombre}" 
+                        th:selected="${venta.cliente != null and venta.cliente.id == cliente.id}">
+                </option>
             </select>
         </div>
 
         <button type="submit" class="btn btn-primary">Guardar</button>
+        <a th:href="@{/admin/ventas}" class="btn btn-secondary">Cancelar</a>
     </form>
-
-    <a href="/admin/ventas" class="btn btn-secondary mt-3">Volver al listado</a>
 </div>
 </body>
 </html>

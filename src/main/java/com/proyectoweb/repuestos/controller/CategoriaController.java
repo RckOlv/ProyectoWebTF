@@ -33,7 +33,13 @@ public class CategoriaController {
 
     @PostMapping
     public Categoria guardar(@RequestBody Categoria categoria) {
-        return categoriaService.guardar(categoria);
+        if (categoria.getId() != null) {
+            // Si el id es no nulo, es una actualización
+            return categoriaService.actualizar(categoria);
+        } else {
+            // Si no tiene id, es una nueva categoría
+            return categoriaService.guardar(categoria);
+        }
     }
 
     @DeleteMapping("/{id}")

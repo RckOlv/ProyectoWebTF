@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 
 import com.proyectoweb.repuestos.entity.Categoria;
 import com.proyectoweb.repuestos.repository.CategoriaRepository;
-import com.proyectoweb.repuestos.service.ICategoriaService;
 
 @Service
 public class CategoriaServiceImpl implements ICategoriaService {
@@ -22,7 +21,7 @@ public class CategoriaServiceImpl implements ICategoriaService {
 
     @Override
     public Categoria guardar(Categoria categoria) {
-        return categoriaRepository.save(categoria);
+        return categoriaRepository.save(categoria);  // Guardar nueva categoría
     }
 
     @Override
@@ -33,5 +32,18 @@ public class CategoriaServiceImpl implements ICategoriaService {
     @Override
     public void eliminar(Long id) {
         categoriaRepository.deleteById(id);
+    }
+
+    @Override
+    public Categoria actualizar(Categoria categoria) {
+        // Comprobamos si la categoría existe
+        Categoria categoriaExistente = categoriaRepository.findById(categoria.getId()).orElse(null);
+        if (categoriaExistente != null) {
+            // Si existe, actualizamos los campos necesarios
+            categoriaExistente.setNombre(categoria.getNombre());
+            categoriaExistente.setDescripcion(categoria.getDescripcion());
+            return categoriaRepository.save(categoriaExistente);  // Guardamos la categoría actualizada
+        }
+        return null;  // Si no existe la categoría, podemos lanzar una excepción o manejarlo según lo necesites
     }
 }

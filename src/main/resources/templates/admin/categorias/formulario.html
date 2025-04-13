@@ -8,17 +8,25 @@
 <body class="bg-light">
 <div class="container mt-5">
     <h2 th:text="${categoria.id} == null ? 'Agregar Nueva Categoría' : 'Editar Categoría'"></h2>
-    <form th:action="@{${categoria.id} == null ? '/admin/categorias/guardar' : '/admin/categorias/guardar'}" method="post">
+    
+    <form th:action="@{/admin/categorias/guardar}" method="post">
+        
+        <!-- Campo oculto con el ID -->
+        <input type="hidden" name="id" th:value="${categoria.id}" />
+
         <div class="mb-3">
             <label for="nombre" class="form-label">Nombre</label>
             <input type="text" class="form-control" id="nombre" name="nombre" th:value="${categoria.nombre}" required>
         </div>
+        
         <div class="mb-3">
             <label for="descripcion" class="form-label">Descripción</label>
             <input type="text" class="form-control" id="descripcion" name="descripcion" th:value="${categoria.descripcion}" required>
         </div>
+        
         <button type="submit" class="btn btn-primary">Guardar</button>
     </form>
+    
     <a href="/admin/categorias" class="btn btn-secondary mt-3">Volver al listado</a>
 </div>
 </body>

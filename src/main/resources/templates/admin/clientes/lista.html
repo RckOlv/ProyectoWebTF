@@ -8,7 +8,7 @@
 <body class="bg-light">
 <div class="container mt-5">
     <h2 class="mb-4">Listado de Clientes</h2>
-    <a href="/admin/clientes/nuevo" class="btn btn-primary mb-3">Agregar Cliente</a>
+    <a th:href="@{/admin/clientes/nuevo}" class="btn btn-primary mb-3">Agregar Cliente</a>
     <table class="table table-bordered table-striped">
         <thead class="table-dark">
             <tr>
@@ -16,6 +16,7 @@
                 <th>Nombre</th>
                 <th>Email</th>
                 <th>Teléfono</th>
+                <th>Estado</th>
                 <th>Acciones</th>
             </tr>
         </thead>
@@ -25,6 +26,7 @@
                 <td th:text="${cliente.nombre}"></td>
                 <td th:text="${cliente.email}"></td>
                 <td th:text="${cliente.telefono}"></td>
+                <td th:text="${cliente.estado}"></td>
                 <td>
                     <a th:href="@{/admin/clientes/editar/{id}(id=${cliente.id})}" class="btn btn-sm btn-warning">Editar</a>
                     <a th:href="@{/admin/clientes/eliminar/{id}(id=${cliente.id})}" class="btn btn-sm btn-danger" onclick="return confirm('¿Estás seguro?')">Eliminar</a>

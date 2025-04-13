@@ -4,7 +4,6 @@ import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
-import jakarta.annotation.PostConstruct;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -16,6 +15,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -26,7 +26,7 @@ import lombok.Setter;
 @Table(name = "ventas")
 @Getter
 @Setter
-@NoArgsConstructor  // Lombok generará este constructor sin parámetros automáticamente
+@NoArgsConstructor
 @AllArgsConstructor
 public class Venta {
 
@@ -35,6 +35,7 @@ public class Venta {
     @Column(name = "id_venta")
     private Long id;
 
+    @Column(name = "fecha_venta")
     private LocalDate fechaVenta;
 
     private Double total;
@@ -49,15 +50,15 @@ public class Venta {
     @OneToMany(mappedBy = "venta", cascade = CascadeType.ALL)
     private Set<DetalleVenta> detalles = new HashSet<>();
 
-    // Inicializar fechaVenta con la fecha actual si está vacía
-    @PostConstruct
-    public void init() {
+    // Establecer fecha actual si no se especifica al guardar
+    @PrePersist
+    public void prePersist() {
         if (this.fechaVenta == null) {
-            this.fechaVenta = LocalDate.now();  // Inicializa la fecha al momento de la creación de la venta
+            this.fechaVenta = LocalDate.now();
         }
     }
 
-    // Método para calcular el total de la venta
+    // Calcular total de la venta
     public Double calcularTotal() {
         double totalVenta = 0.0;
         for (DetalleVenta detalle : detalles) {
@@ -66,17 +67,27 @@ public class Venta {
         return totalVenta;
     }
 
-    // El método setTotal está siendo llamado en el servicio, ya lo tienes en la clase Venta
     public void setTotal(Double total) {
         this.total = total;
     }
 
-    // Métodos getter y setter para detalles
     public Set<DetalleVenta> getDetalles() {
         return detalles;
     }
 
     public Long getId() {
         return id;
+    }
+
+    public EstadoVenta getEstado() {
+        return estado;
+    }
+
+    public Cliente getCliente() {
+        return cliente;
+    }
+
+    public void setEstado(EstadoVenta estado) {
+        this.estado = estado;
     }
 }

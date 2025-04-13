@@ -1,5 +1,7 @@
 package com.proyectoweb.repuestos.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,7 +15,7 @@ import com.proyectoweb.repuestos.entity.Cliente;
 import com.proyectoweb.repuestos.service.IClienteService;
 
 @Controller
-@RequestMapping("/admin/clientes")
+@RequestMapping("/clientes")
 public class ClientesWebController {
 
     @Autowired
@@ -21,33 +23,37 @@ public class ClientesWebController {
 
     @GetMapping
     public String listarClientes(Model model) {
-        var clientes = clienteService.listarTodos();
+        List<Cliente> clientes = clienteService.listarTodos();
         model.addAttribute("clientes", clientes);
-        return "admin/clientes/lista";
+        return "clientes/lista";
     }
 
     @GetMapping("/nuevo")
     public String mostrarFormularioNuevo(Model model) {
         model.addAttribute("cliente", new Cliente());
-        return "admin/clientes/formulario";
+        return "clientes/formulario";
     }
 
     @PostMapping("/guardar")
     public String guardarCliente(@ModelAttribute Cliente cliente) {
         clienteService.guardar(cliente);
-        return "redirect:/admin/clientes";
+        return "redirect:/clientes";
     }
 
     @GetMapping("/editar/{id}")
     public String editarCliente(@PathVariable Long id, Model model) {
         Cliente cliente = clienteService.buscarPorId(id);
-        model.addAttribute("cliente", cliente);
-        return "admin/clientes/formulario";
+        if (cliente != null) {
+            model.addAttribute("cliente", cliente);
+            return "clientes/formulario";
+        } else {
+            return "redirect:/clientes";
+        }
     }
 
     @GetMapping("/eliminar/{id}")
     public String eliminarCliente(@PathVariable Long id) {
         clienteService.eliminar(id);
-        return "redirect:/admin/clientes";
+        return "redirect:/clientes";
     }
 }

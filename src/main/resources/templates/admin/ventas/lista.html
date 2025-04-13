@@ -28,11 +28,11 @@
             <tr th:each="venta : ${ventas}">
                 <td th:text="${venta.id}"></td>
                 <td th:text="${venta.cliente.nombre}"></td>
-                <td th:text="${#temporals.format(venta.fechaVenta, 'dd/MM/yyyy HH:mm')}"></td>
+                <td th:text="${#temporals.format(venta.fechaVenta, 'dd/MM/yyyy')}"></td>
                 <td th:text="${#numbers.formatDecimal(venta.total, 0, 'COMMA', 2, 'POINT')}"></td>
                 <td>
-                    <span class="status" th:classappend="${venta.estado == 'PENDIENTE' ? 'pendiente' : (venta.estado == 'COMPLETADA' ? 'completada' : 'cancelada')}">
-                        <span th:text="${venta.estado}">PENDIENTE</span>
+                    <span class="status" th:classappend="${venta.estado.name() == 'PENDIENTE' ? 'pendiente' : (venta.estado.name() == 'COMPLETADA' ? 'completada' : 'cancelada')}">
+                        <span th:text="${venta.estado.name()}">PENDIENTE</span>
                     </span>
                 </td>
                 <td>

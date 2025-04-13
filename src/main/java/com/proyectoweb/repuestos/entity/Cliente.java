@@ -33,7 +33,7 @@ public class Cliente {
     private LocalDate fechaRegistro;
 
     @Enumerated(EnumType.STRING)
-    private EstadoUsuario estado;
+    private EstadoCliente estado;
 
     // Getters y Setters
 
@@ -93,11 +93,11 @@ public class Cliente {
         this.fechaRegistro = fechaRegistro;
     }
 
-    public EstadoUsuario getEstado() {
+    public EstadoCliente getEstado() {
         return estado;
     }
 
-    public void setEstado(EstadoUsuario estado) {
+    public void setEstado(EstadoCliente estado) {
         this.estado = estado;
     }
 }

@@ -5,5 +5,4 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.proyectoweb.repuestos.entity.Cliente;
 
 public interface ClienteRepository extends JpaRepository<Cliente, Long> {
-    // Métodos adicionales pueden ser añadidos aquí si es necesario
 }

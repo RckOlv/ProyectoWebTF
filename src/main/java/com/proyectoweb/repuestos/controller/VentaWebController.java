@@ -65,6 +65,12 @@ public class VentaWebController {
             logger.warn("No se ha asociado un cliente a la venta.");
         }
 
+        // Verificar si el estado es valido antes de guardar
+        if (venta.getEstado() == null) {
+            logger.error("El estado de la venta no puede ser nulo.");
+            return "redirect:/admin/ventas?error=estado_invalido";
+        }
+
         if (venta.getId() != null) {
             ventaService.actualizarVenta(venta);
         } else {

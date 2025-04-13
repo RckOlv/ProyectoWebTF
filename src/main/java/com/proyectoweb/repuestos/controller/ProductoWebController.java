@@ -40,7 +40,13 @@ public class ProductoWebController {
 
     @PostMapping("/guardar")
     public String guardarProducto(@ModelAttribute Producto producto) {
-        productoService.guardar(producto);
+        if (producto.getId() == null) {
+            // Crear nuevo producto
+            productoService.guardar(producto);
+        } else {
+            // Actualizar producto existente
+            productoService.actualizar(producto);
+        }
         return "redirect:/admin/productos";
     }
 

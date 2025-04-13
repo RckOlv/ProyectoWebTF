@@ -9,4 +9,5 @@ public interface ICategoriaService {
     Categoria guardar(Categoria categoria);
     Categoria buscarPorId(Long id);
     void eliminar(Long id);
+    Categoria actualizar(Categoria categoria);  // Añadir método de actualización
 }
