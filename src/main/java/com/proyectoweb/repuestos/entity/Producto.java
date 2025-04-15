@@ -1,5 +1,6 @@
 package com.proyectoweb.repuestos.entity;
 
+import jakarta.persistence.*;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -11,41 +12,48 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
+import java.io.Serializable;
+
 @Entity
 @Table(name = "productos")
-public class Producto {
+public class Producto implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_producto")
-    private Long id;
+    @Column(name = "id_producto")  // Nombre de la columna en la base de datos
+    private Long idProducto;
 
+    @Column(name = "nombre")
     private String nombre;
 
+    @Column(name = "descripcion")
     private String descripcion;
 
+    @Column(name = "precio")
     private Double precio;
 
+    @Column(name = "stock")
     private Integer stock;
 
     @Column(name = "puntos_asociados")
     private Integer puntosAsociados;
 
     @Enumerated(EnumType.STRING)
-    private EstadoProducto estado;
+    @Column(name = "estado")
+    private EstadoProducto estado;  // Enum que representa los estados DISPONIBLE y NO DISPONIBLE
 
     @ManyToOne
-    @JoinColumn(name = "id_categoria")
+    @JoinColumn(name = "id_categoria")  // Relación con la tabla Categoria
     private Categoria categoria;
 
     // Getters y Setters
 
-    public Long getId() {
-        return id;
+    public Long getIdProducto() {
+        return idProducto;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setIdProducto(Long idProducto) {
+        this.idProducto = idProducto;
     }
 
     public String getNombre() {

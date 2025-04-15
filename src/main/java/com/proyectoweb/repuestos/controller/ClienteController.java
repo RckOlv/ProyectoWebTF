@@ -37,8 +37,12 @@ public class ClienteController {
     @GetMapping("/editar/{id}")
     public String editarCliente(@PathVariable("id") Long id, Model model) {
         Cliente cliente = clienteService.buscarPorId(id);
-        model.addAttribute("cliente", cliente);
-        return "admin/clientes/formulario";
+        if (cliente != null) {
+            model.addAttribute("cliente", cliente);
+            return "admin/clientes/formulario";
+        } else {
+            return "redirect:/admin/clientes";
+        }
     }
 
     @PostMapping("/guardar")

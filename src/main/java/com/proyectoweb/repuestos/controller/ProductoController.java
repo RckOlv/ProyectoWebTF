@@ -1,43 +1,74 @@
 package com.proyectoweb.repuestos.controller;
 
-import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 
+import com.proyectoweb.repuestos.entity.Categoria;
 import com.proyectoweb.repuestos.entity.Producto;
+import com.proyectoweb.repuestos.repository.CategoriaRepository;
 import com.proyectoweb.repuestos.service.IProductoService;
 
-@RestController
-@RequestMapping("/api/productos")
+import jakarta.validation.Valid;
+
+@Controller
+@RequestMapping("/admin/productos")
 public class ProductoController {
 
     @Autowired
     private IProductoService productoService;
 
+    @Autowired
+    private CategoriaRepository categoriaRepository;
+
     @GetMapping
-    public List<Producto> listar() {
-        return productoService.listarTodos();
+    public String listarProductos(Model model) {
+        model.addAttribute("productos", productoService.listarTodos());
+        return "admin/productos/lista";
     }
 
-    @GetMapping("/{id}")
-    public Producto buscarPorId(@PathVariable Long id) {
-        return productoService.buscarPorId(id);
+    @GetMapping("/nuevo")
+    public String mostrarFormularioNuevo(Model model) {
+        Producto producto = new Producto();
+        producto.setCategoria(new Categoria()); // importante para evitar null en el form
+        model.addAttribute("producto", producto);
+        model.addAttribute("categorias", categoriaRepository.findAll());
+        return "admin/productos/formulario";
     }
 
-    @PostMapping
-    public Producto guardar(@RequestBody Producto producto) {
-        return productoService.guardar(producto);
+    @PostMapping("/guardar")
+    public String guardarProducto(@ModelAttribute("producto") @Valid Producto producto,
+                                  BindingResult result,
+                                  Model model) {
+        if (result.hasErrors()) {
+            model.addAttribute("categorias", categoriaRepository.findAll());
+            return "admin/productos/formulario";
+        }
+        productoService.guardar(producto);
+        return "redirect:/admin/productos";
     }
 
-    @DeleteMapping("/{id}")
-    public void eliminar(@PathVariable Long id) {
+    @GetMapping("/editar/{id}")
+    public String mostrarFormularioEditar(@PathVariable("id") Long id, Model model) {
+        Producto producto = productoService.buscarPorId(id);
+        if (producto == null) {
+            return "redirect:/admin/productos";
+        }
+        if (producto.getCategoria() == null) {
+            producto.setCategoria(new Categoria());
+        }
+        model.addAttribute("producto", producto);
+        model.addAttribute("categorias", categoriaRepository.findAll());
+        return "admin/productos/formulario";
+    }
+
+    @GetMapping("/eliminar/{id}")
+    public String eliminarProducto(@PathVariable("id") Long id) {
         productoService.eliminar(id);
+        return "redirect:/admin/productos";
     }
 }
