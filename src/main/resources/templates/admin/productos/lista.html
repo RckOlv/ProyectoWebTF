@@ -18,6 +18,7 @@
             <th>Stock</th>
             <th>Estado</th>
             <th>Categoría</th>
+            <th>Puntos Asociados</th> <!-- Columna añadida para puntos -->
             <th>Acciones</th>
         </tr>
         </thead>
@@ -29,6 +30,7 @@
             <td th:text="${producto.stock}"></td>
             <td th:text="${producto.estado}"></td>
             <td th:text="${producto.categoria.nombre}"></td>
+            <td th:text="${producto.puntosAsociados}"></td> <!-- Muestra los puntos asociados -->
             <td>
                 <a th:href="@{/admin/productos/editar/{id}(id=${producto.idProducto})}" class="btn btn-warning btn-sm">Editar</a>
                 <a th:href="@{/admin/productos/eliminar/{id}(id=${producto.idProducto})}" class="btn btn-danger btn-sm" onclick="return confirm('¿Estás seguro?')">Eliminar</a>

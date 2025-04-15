@@ -1,7 +1,5 @@
 package com.proyectoweb.repuestos.controller;
 
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -27,17 +25,18 @@ public class ProductoController {
 
     @GetMapping
     public String listarProductos(Model model) {
+        // Aquí agregamos los productos y los puntos asociados
         model.addAttribute("productos", productoService.listarTodos());
-        return "admin/productos/lista";
+        return "admin/productos/lista"; // Vista de lista de productos
     }
 
     @GetMapping("/nuevo")
     public String mostrarFormularioNuevo(Model model) {
         Producto producto = new Producto();
-        producto.setCategoria(new Categoria()); // importante para evitar null en el form
+        producto.setCategoria(new Categoria()); // Importante para evitar null en el form
         model.addAttribute("producto", producto);
         model.addAttribute("categorias", categoriaRepository.findAll());
-        return "admin/productos/formulario";
+        return "admin/productos/formulario"; // Vista para crear nuevo producto
     }
 
     @PostMapping("/guardar")
@@ -46,10 +45,12 @@ public class ProductoController {
                                   Model model) {
         if (result.hasErrors()) {
             model.addAttribute("categorias", categoriaRepository.findAll());
-            return "admin/productos/formulario";
+            return "admin/productos/formulario"; // Si hay errores, se vuelve al formulario
         }
+        // Calcula y asigna los puntos asociados antes de guardar
+        producto.setPuntosAsociados((int) (producto.getPrecio() / 1000)); // Redondeo hacia abajo
         productoService.guardar(producto);
-        return "redirect:/admin/productos";
+        return "redirect:/admin/productos"; // Redirige a la lista de productos
     }
 
     @GetMapping("/editar/{id}")
@@ -63,12 +64,12 @@ public class ProductoController {
         }
         model.addAttribute("producto", producto);
         model.addAttribute("categorias", categoriaRepository.findAll());
-        return "admin/productos/formulario";
+        return "admin/productos/formulario"; // Vista para editar producto
     }
 
     @GetMapping("/eliminar/{id}")
     public String eliminarProducto(@PathVariable("id") Long id) {
         productoService.eliminar(id);
-        return "redirect:/admin/productos";
+        return "redirect:/admin/productos"; // Redirige a la lista de productos después de eliminar
     }
 }

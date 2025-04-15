@@ -1,17 +1,6 @@
 package com.proyectoweb.repuestos.entity;
 
 import jakarta.persistence.*;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
-
 import java.io.Serializable;
 
 @Entity
@@ -20,7 +9,7 @@ public class Producto implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_producto")  // Nombre de la columna en la base de datos
+    @Column(name = "id_producto")
     private Long idProducto;
 
     @Column(name = "nombre")
@@ -40,10 +29,10 @@ public class Producto implements Serializable {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "estado")
-    private EstadoProducto estado;  // Enum que representa los estados DISPONIBLE y NO DISPONIBLE
+    private EstadoProducto estado;
 
     @ManyToOne
-    @JoinColumn(name = "id_categoria")  // Relación con la tabla Categoria
+    @JoinColumn(name = "id_categoria")
     private Categoria categoria;
 
     // Getters y Setters
@@ -78,6 +67,8 @@ public class Producto implements Serializable {
 
     public void setPrecio(Double precio) {
         this.precio = precio;
+        // Calcular puntos asociados basado en el precio
+        this.puntosAsociados = (int) (precio / 1000);  // 1 punto por cada $1000
     }
 
     public Integer getStock() {
@@ -92,10 +83,7 @@ public class Producto implements Serializable {
         return puntosAsociados;
     }
 
-    public void setPuntosAsociados(Integer puntosAsociados) {
-        this.puntosAsociados = puntosAsociados;
-    }
-
+    // No setter para puntosAsociados porque ya es calculado automáticamente
     public EstadoProducto getEstado() {
         return estado;
     }
@@ -106,6 +94,10 @@ public class Producto implements Serializable {
 
     public Categoria getCategoria() {
         return categoria;
+    }
+
+    public void setPuntosAsociados(Integer puntosAsociados) {
+        this.puntosAsociados = puntosAsociados;
     }
 
     public void setCategoria(Categoria categoria) {
